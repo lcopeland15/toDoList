@@ -20,8 +20,33 @@ class ViewController: UIViewController {
         tableView.dataSource = self
       
     }
-    
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.identifier == "EditItem"{
+        
+        let destination = segue.destination as! DetailViewController
+        
+        let index = tableView.indexPathForSelectedRow!.row
+        destination.toDoItem = toDoArray[index]
+    }
+        
+    }
 
+    @IBAction func unwindFromDetailViewController(segue: UIStoryboardSegue){
+        let sourceViewController = segue.source as! DetailViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow{
+            toDoArray[indexPath.row] = sourceViewController.toDoItem!
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            
+            
+        }
+        
+        
+    }
+    
+    
+    
+    
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource
